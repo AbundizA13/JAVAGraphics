@@ -6,6 +6,7 @@ public class Fisica {
     final double rebote = 0.8;
     private final int size;
 
+
     public Fisica(double x, double y){
         this.x = x;
         this.y = y;
@@ -47,17 +48,19 @@ public class Fisica {
         double minimo = (size + otra.size) / 2.0;
 
         //Deja los pixeles justo en contacto, recorre justo la cantidad penetrada
-        if(Math.abs(dx) >= Math.abs(dy)){ //% de penet. mayor en eje X
+        if(Math.abs(dx) >= Math.abs(dy)){ //% de penet. mayor en ejeY
             //El signo solo indica hacia donde se debe mover cada obj.
             double signo = dx >= 0 ? 1 : -1;
             double penetracion = (minimo - Math.abs(dx)) / 2;
             x -= signo * penetracion;
             otra.x += signo * penetracion;
-        }else{ //% de penet. mayor en eje Y
+            if ((otra.vx - vx) * signo < 0) { double t = vx; vx = otra.vx; otra.vx = t; }
+        }else{ //% de penet. mayor en eje X
             double signo = dy >= 0 ? 1 : -1;
             double penetracion = (minimo - Math.abs(dy)) / 2;
             y -= signo * penetracion;
             otra.y += signo * penetracion;
+            if ((otra.vy - vy) * signo < 0) { double t = vy; vy = otra.vy; otra.vy = t; }
         }
 
         //Producto punto para saber si están viajando en direcciones contrarias

@@ -6,7 +6,6 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.Arrays;
-import java.util.Random;
 
 public class Ventana extends Canvas {
     static final int ESCALA = 5;
@@ -57,7 +56,7 @@ public class Ventana extends Canvas {
         return (px >= izqPared && px < imagen.getWidth() && py >= techo && py < imagen.getHeight());
     }
 
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         Random r = new Random();
         Mundo mundo = new Mundo(160, 120);
         for(int i = 10; i < 150; i+=r.nextInt(15)+1){
@@ -83,6 +82,7 @@ public class Ventana extends Canvas {
         while(true){
             long actual = System.nanoTime();
             acumulado += (actual - anterior) / 1e9;
+            acumulado = Math.min(acumulado, 0.25);
             anterior = actual;
 
             while(acumulado >= dt){ //Mientras se acumule al menos un "dt"
@@ -93,5 +93,5 @@ public class Ventana extends Canvas {
 
             try{Thread.sleep(1);} catch(InterruptedException _){}
         }
-    }
+    }*/
 }
