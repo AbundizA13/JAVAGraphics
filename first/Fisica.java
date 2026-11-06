@@ -1,46 +1,41 @@
 package andru.graphics.first;
 
 public class Fisica {
-    private double x, y; //Posición
-    private double vx = 40, vy = 0;
+    private Vec2 posicion = new Vec2(); //Posición
+    private Vec2 velocidad = new Vec2();
     final double rebote = 0.8;
     private final int size;
 
 
     public Fisica(double x, double y){
-        this.x = x;
-        this.y = y;
+        this.posicion.setX(x);
+        this.posicion.setY(y);
+        //this.velocidad.setX(vx);
         this.size = 1;
     }
-    public Fisica(double x, double y, double vx){
-        this.x = x;
-        this.y = y;
-        this.vx = vx;
-        this.size = 1;
-    }
-    public Fisica(double x, double y, double vx, int size){
-        this.x = x;
-        this.y = y;
-        this.vx = vx;
+    public Fisica(double x, double y, int size){
+        this.posicion.setX(x);
+        this.posicion.setY(y);
+        //this.velocidad.setX(vx);
         this.size = size;
     }
 
     public double getX() {
-        return x;
+        return posicion.getX();
     }
     public double getY() {
-        return y;
+        return posicion.getY();
     }
     public void setX(double x){
-        this.x = x;
+        this.posicion.setX(x);
     }
     public void setY(double y){
-        this.y = y;
+        this.posicion.setY(y);
     }
-    public void actualizar(double dt, double g){
-        vy += g*dt;
-        x += vx * dt;
-        y += vy * dt;
+    public void actualizar(double dt, Vec2 g){
+        this.velocidad.sumarEscalado(g, dt);
+        this.posicion.sumarEscalado(velocidad, dt);
+
     }
 
     public void colisionarConObjeto(Fisica otra){
@@ -52,23 +47,23 @@ public class Fisica {
             //El signo solo indica hacia donde se debe mover cada obj.
             double signo = dx >= 0 ? 1 : -1;
             double penetracion = (minimo - Math.abs(dx)) / 2;
-            x -= signo * penetracion;
-            otra.x += signo * penetracion;
-            if ((otra.vx - vx) * signo < 0) { double t = vx; vx = otra.vx; otra.vx = t; }
+            posicion.decrementarX(signo * penetracion);
+            otra.posicion.incrementarX(signo * penetracion);
+            if ((otra.velocidad.getX() - velocidad.getX()) * signo < 0) { double t = velocidad.getX(); velocidad.setX(otra.velocidad.getX()); otra.velocidad.setX(t); }
         }else{ //% de penet. mayor en eje X
             double signo = dy >= 0 ? 1 : -1;
             double penetracion = (minimo - Math.abs(dy)) / 2;
-            y -= signo * penetracion;
-            otra.y += signo * penetracion;
-            if ((otra.vy - vy) * signo < 0) { double t = vy; vy = otra.vy; otra.vy = t; }
+            posicion.decrementarY(signo * penetracion);
+            otra.posicion.incrementarY(signo * penetracion);
+            if ((otra.velocidad.getY() - velocidad.getY()) * signo < 0) { double t = velocidad.getY(); velocidad.setY(otra.velocidad.getY()); otra.velocidad.setY(t); }
         }
 
         //Producto punto para saber si están viajando en direcciones contrarias
-        if((otra.vx - vx) * dx + (otra.vy - vy) * dy < 0){
-            double tmpVx = vx, tmpVy = vy;
+        if((otra.velocidad.getX() - velocidad.getX()) * dx + (otra.velocidad.getY() - velocidad.getY()) * dy < 0){
+            double tmpVx = velocidad.getX(), tmpVy = velocidad.getY();
             //Intercambian velocidades
-            vx = otra.vx; vy = otra.vy;
-            otra.vx = tmpVx; otra.vy = tmpVy;
+            velocidad.setX(otra.velocidad.getX()); velocidad.setY(otra.velocidad.getY());
+            otra.velocidad.setX(tmpVx); otra.velocidad.setY(tmpVy);
         }
     }
     public boolean tocaA(Fisica otra){
@@ -78,13 +73,27 @@ public class Fisica {
     }
     //Obtienen el centro respecto a las coordenadas reales.
     private double getCentroX(){
-        return x + size / 2.0;
+        return posicion.getX() + size / 2.0;
     }
     private double getCentroY(){
-        return y + size / 2.0;
+        return posicion.getY() + size / 2.0;
     }
 
-    public void reboteHorizontal(){ vx = -vx;}
-    public void reboteVertical(){ vy = -vy * rebote; }
+    public void reboteHorizontal(){ velocidad.setX(-velocidad.getX()*rebote);}
+    public void reboteVertical(){ velocidad.setY(-velocidad.getY()*rebote);}
     public int getSize(){ return this.size;}
+
+    public Vec2 getPosicion(){
+        return this.posicion;
+    }
+    public void setPosicion(Vec2 posicion){
+        this.posicion = posicion;
+    }
+
+    public Vec2 getVelocidad(){
+        return this.velocidad;
+    }
+    public void setVelocidad(Vec2 velocidad){
+        this.velocidad = velocidad;
+    }
 }

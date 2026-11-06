@@ -34,7 +34,7 @@ public class Ventana extends Canvas {
             for(int py = posY; py < posY + size; py++){
                 for(int px = posX; px < posX + size; px++){
                     if(estaDentroDeVentana(px, py)){
-                        pixeles[py * mundo.getAncho() + px] = 0xFFFFFF;
+                        pixeles[py * mundo.getAncho() + px] = objeto.getColor();
                     }
                 }
             }

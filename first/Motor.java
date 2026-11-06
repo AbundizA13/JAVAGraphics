@@ -26,9 +26,15 @@ public class Motor {
         Random r = new Random();
         for (int i = 10; i < 150; i += r.nextInt(15) + 1) {
             for (int j = 20; j < 100; j += r.nextInt(20) + 1) {
-                mundo.agregarObjeto(new Objeto(i, j, r.nextInt(10), r.nextInt(3) + 1));
+                Objeto nuevo = new Objeto(i, j, r.nextInt(3) + 1);
+                nuevo.setVelocidad(r.nextInt(10), r.nextInt(30));
+                mundo.agregarObjeto(nuevo);
+
             }
         }
+        Objeto color = new Objeto(0, 0, 10);
+        color.setVelocidad(0, 120); color.setColor(0x99FFFF);
+        mundo.agregarObjeto(color);
     }
     private static void cicloFisica(){
         final double dt = 1.0/120;

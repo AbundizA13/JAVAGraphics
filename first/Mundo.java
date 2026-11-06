@@ -6,7 +6,7 @@ import java.util.List;
 public class Mundo {
     private final int ancho, alto;
     private final List<Objeto> objetos = new ArrayList<>();
-    private final double g = 200; //Aceleración (px/s^2) positivo es hacia abajo
+    private final Vec2 g = new Vec2(0, 200); //Aceleración (px/s^2) positivo es hacia abajo
 
     public void agregarObjeto(Objeto o) {objetos.add(o);}
     public void agregarObjetos(Objeto[] objetos){
@@ -25,6 +25,7 @@ public class Mundo {
     public void actualizar(double dt){
         for (Objeto o : objetos){
             o.getFisica().actualizar(dt, g);
+            o.updateColor();
         }
         detectarColisiones();
     }
