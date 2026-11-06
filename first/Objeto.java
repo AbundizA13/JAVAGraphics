@@ -3,6 +3,7 @@ package andru.graphics.first;
 public class Objeto {
     private final Fisica fisica;
     private int color = 0xFFFFFF; //Blanco por defecto
+    private Control control = null;
 
 
 
@@ -15,6 +16,12 @@ public class Objeto {
     public void setVelocidad(int vx, int vy){
         Vec2 velocidad = new Vec2(vx, vy);
         this.fisica.setVelocidad(velocidad);
+    }
+    public void setControl(Control control){
+        this.control = control;
+    }
+    public Control getControl(){
+        return this.control;
     }
     public void setColor(int color){
         this.color = color;
@@ -38,5 +45,15 @@ public class Objeto {
 
     public Fisica getFisica(){
         return this.fisica;
+    }
+}
+
+class Jugador extends Objeto{
+
+    public Jugador(int x, int y) {
+        super(x, y);
+    }
+    public Jugador(int x, int y, int size){
+        super(x, y, size);
     }
 }

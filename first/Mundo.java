@@ -7,6 +7,7 @@ public class Mundo {
     private final int ancho, alto;
     private final List<Objeto> objetos = new ArrayList<>();
     private final Vec2 g = new Vec2(0, 200); //Aceleración (px/s^2) positivo es hacia abajo
+    private Jugador jugador = null;
 
     public void agregarObjeto(Objeto o) {objetos.add(o);}
     public void agregarObjetos(Objeto[] objetos){
@@ -23,7 +24,12 @@ public class Mundo {
     }
 
     public void actualizar(double dt){
+        //Eventos.procesarEventosJugador(this.jugador);
+
         for (Objeto o : objetos){
+            if(o.getControl() != null){
+                o.getControl().aplicar(o.getFisica(), dt);
+            }
             o.getFisica().actualizar(dt, g);
             o.updateColor();
         }
@@ -54,6 +60,10 @@ public class Mundo {
                 a.colisionarConObjeto(b);
             }
         }
+    }
+    public void vincularJugador(Jugador jugador){
+        this.jugador = jugador;//new Jugador(0,0, 10);
+        objetos.add(jugador);
     }
 
     public int getAncho(){
